@@ -1,16 +1,20 @@
 # Telegram Serverless Mustachizer
 Telegram Bot puts mustache on any face what he sees.
 
-## How It Works
-
-Perfectly.
+![image](https://user-images.githubusercontent.com/9394918/140786561-adfae21c-33f2-416a-8978-12f04e52ae84.png)
 
 ## Under the hood
 
 * Serverless flows on JS
-* State storage with DynamoDB
-* [Serverless Framework](https://www.serverless.com/framework/docs/getting-started/)
+* State storage with DynamoDB or YDB
+* Photo storage with S3
+* Messaging with SQS
+* [Face Detection](https://cloud.yandex.ru/docs/vision/operations/face-detection/) by Yandex Cloud
+* [Serverless Framework](https://www.serverless.com/framework/docs/getting-started/) for AWS and [Terraform Yandex Cloud provider](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs) for Yandex Cloud.
 * [Telegraf Bot Framework](https://telegraf.js.org/)
+
+![image](https://user-images.githubusercontent.com/9394918/140786699-1e15ff4b-f071-4242-b375-4a3b3fe2bdf9.png)
+
 
 ## How to install
 
