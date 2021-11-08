@@ -1,0 +1,18 @@
+yc_token = ""
+yc_cloud_id = "b1g3jddf4nv5e9okle7p"
+yc_folder_id = "b1gnkdtcmnfo9tg1737r"
+bot_token = ""
+dynamodb_table = "practicum-devops-bot-helper"
+
+s3_config = {
+  endpoint = "storage.yandexcloud.net"
+  bucket = "test-quiz"
+  region = "ru-central1"
+  key = "terraform/state.tfstate"
+  access_key = ""
+  secret_key = ""
+}
+
+telegram_handler_function = {
+  name = "telegram_handler_function"
+}

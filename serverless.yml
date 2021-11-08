@@ -1,0 +1,86 @@
+service: serverless-telegram-mustashinizer
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+#  - serverless-yandex-cloud
+
+custom:
+  config: ${file(.env.yml):${opt:stage, self:provider.stage}}
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      noStart: true
+provider:
+  name: aws
+#  name: yandex-cloud
+  runtime: nodejs12.x
+  stage: dev
+#  region: us-east-1
+  region: ru-central1
+  memorySize: 128
+  timeout: 15
+  endpointType: regional
+  environment:
+    region: ${self:provider.region}
+    DEBUG: 'telegraf:*'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.config.dynamodb_table}"
+
+functions:
+  telegramEventHandler:
+    handler: api/telegram.eventHandler
+    description: Handle events from telegram
+    events:
+      - http:
+          path: webhook
+          method: post
+          cors: true
+    environment:
+      bot_token: ${self:custom.config.bot_token}
+      dynamodb_table: ${self:custom.config.dynamodb_table}
+      queue_id: ${self:custom.config.queue_id}
+      queue_name: ${self:custom.config.queue_name}
+      cloud_id: ${self:custom.config.cloud_id}
+      BUCKET_ID: ${self:custom.config.bucket_id}
+      AWS_ACCESS_KEY_ID: ${self:custom.config.aws_access_key_id}
+      AWS_SECRET_ACCESS_KEY: ${self:custom.config.aws_secret_access_key}
+  queueEventHandler:
+    handler: api/queue.eventHandler
+    description: Handle events from queue
+    events:
+      - sqs: arn:aws:sqs:ru-central1:queue:default
+    environment:
+      bot_token: ${self:custom.config.bot_token}
+      dynamodb_table: ${self:custom.config.dynamodb_table}
+      folder_id: ${self:custom.config.folder_id}
+      api_key: ${self:custom.config.api_key}
+resources:
+  Resources:
+    TgSlidesBot:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.config.dynamodb_table}
+        AttributeDefinitions:
+          - AttributeName: SessionKey
+            AttributeType: S
+        KeySchema:
+          - AttributeName: SessionKey
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
