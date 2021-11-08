@@ -1,5 +1,5 @@
 # Telegram Serverless Mustachizer
-Telegram Bot puts mustache on any face what he sees.
+Telegram Bot puts mustache on any face what he sees: **[Try live](https://t.me/MustachenizerBot)**
 
 ![image](https://user-images.githubusercontent.com/9394918/140786561-adfae21c-33f2-416a-8978-12f04e52ae84.png)
 
