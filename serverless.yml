@@ -49,6 +49,8 @@ functions:
     environment:
       bot_token: ${self:custom.config.bot_token}
       dynamodb_table: ${self:custom.config.dynamodb_table}
+      queue_id: ${self:custom.config.queue_id}
+      queue_name: ${self:custom.config.queue_name}
       cloud_id: ${self:custom.config.cloud_id}
       BUCKET_ID: ${self:custom.config.bucket_id}
       AWS_ACCESS_KEY_ID: ${self:custom.config.aws_access_key_id}

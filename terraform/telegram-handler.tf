@@ -13,7 +13,9 @@ resource "yandex_function" "telegram_handler" {
     "dynamodb_table": var.dynamodb_table,
     "region": var.s3_config.region,
     "db_id": yandex_ydb_database_serverless.database1.id,
-    "cloud_id": var.yc_cloud_id
+    "cloud_id": var.yc_cloud_id,
+    "queue_id": var.queue_id,
+    "queue_name": var.queue_name
   }
   user_hash = filesha256(data.archive_file.code_archive.output_path)
   content {
