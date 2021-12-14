@@ -1,0 +1,20 @@
+{
+  "TableName": "face-mask",
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "SessionKey",
+      "AttributeType": "S"
+    }
+  ],
+  "KeySchema": [
+    {
+      "AttributeName": "SessionKey",
+      "KeyType": "HASH"
+    }
+  ],
+  "WriteCapacityUnits": 1,
+  "TimeToLiveSpecification": {
+    "AttributeName": "ttl",
+    "Enabled": true
+  }
+}

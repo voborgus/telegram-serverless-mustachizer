@@ -1,12 +1,13 @@
 const {Telegraf} = require('telegraf')
 const Stage = require('telegraf/stage')
+const dynamoDB = require('../data/dynamodb')
 const Scene = require('telegraf/scenes/base')
-
 const receivePhoto = new Scene('receivePhoto')
 const stage = new Stage()
 stage.register(receivePhoto)
 
 const bot = new Telegraf(process.env.bot_token)
+bot.use(dynamoDB.dynamoDBSession.middleware())
 bot.use(stage.middleware())
 
 bot.start(async (ctx) => {

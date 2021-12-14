@@ -7,6 +7,12 @@ plugins:
 
 custom:
   config: ${file(.env.yml):${opt:stage, self:provider.stage}}
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      noStart: true
 provider:
   name: aws
 #  name: yandex-cloud
@@ -19,6 +25,18 @@ provider:
   endpointType: regional
   environment:
     region: ${self:provider.region}
+    DEBUG: 'telegraf:*'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.config.dynamodb_table}"
+
 functions:
   telegramEventHandler:
     handler: api/telegram.eventHandler
@@ -30,3 +48,23 @@ functions:
           cors: true
     environment:
       bot_token: ${self:custom.config.bot_token}
+      dynamodb_table: ${self:custom.config.dynamodb_table}
+resources:
+  Resources:
+    TgSlidesBot:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.config.dynamodb_table}
+        AttributeDefinitions:
+          - AttributeName: SessionKey
+            AttributeType: S
+        KeySchema:
+          - AttributeName: SessionKey
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
