@@ -49,6 +49,20 @@ functions:
     environment:
       bot_token: ${self:custom.config.bot_token}
       dynamodb_table: ${self:custom.config.dynamodb_table}
+      cloud_id: ${self:custom.config.cloud_id}
+      BUCKET_ID: ${self:custom.config.bucket_id}
+      AWS_ACCESS_KEY_ID: ${self:custom.config.aws_access_key_id}
+      AWS_SECRET_ACCESS_KEY: ${self:custom.config.aws_secret_access_key}
+  queueEventHandler:
+    handler: api/queue.eventHandler
+    description: Handle events from queue
+    events:
+      - sqs: arn:aws:sqs:ru-central1:queue:default
+    environment:
+      bot_token: ${self:custom.config.bot_token}
+      dynamodb_table: ${self:custom.config.dynamodb_table}
+      folder_id: ${self:custom.config.folder_id}
+      api_key: ${self:custom.config.api_key}
 resources:
   Resources:
     TgSlidesBot:
