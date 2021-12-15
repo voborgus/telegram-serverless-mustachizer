@@ -23,21 +23,6 @@ function uploadFile(name, file) {
     })
 }
 
-function getSignedUrl(name) {
-    const params = {
-        Key: 'images/' + name + '.jpg',
-        Bucket: process.env.BUCKET_ID
-    }
-    return new Promise(resolve => {
-        storage.getSignedUrl("getObject", params, function(err, url) {
-            if (err) {
-                throw err
-            }
-            return resolve(url);
-        })
-    })
-}
-
 module.exports = {
-    uploadFile, getSignedUrl
+    uploadFile
 }
