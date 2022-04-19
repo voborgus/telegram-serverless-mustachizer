@@ -1,19 +1,14 @@
 service: serverless-telegram-mustashinizer
 
 plugins:
-  - serverless-dynamodb-local
   - serverless-offline
-#  - serverless-yandex-cloud
-
 custom:
   config: ${file(.env.yml):${opt:stage, self:provider.stage}}
 provider:
   name: aws
-#  name: yandex-cloud
   runtime: nodejs12.x
   stage: dev
-#  region: us-east-1
-  region: ru-central1
+  region: us-east-1
   memorySize: 128
   timeout: 15
   endpointType: regional
